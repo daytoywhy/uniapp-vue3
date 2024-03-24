@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "分类列表",
+  "enablePullDownRefresh": false,
+  "navigationStyle": "custom",
+  "usingComponents": {}
+}
