@@ -38,10 +38,11 @@ const _sfc_main = {
       }, common_vendor.unref(utils_common.compareTimestamp)(__props.item.updateTime) ? {
         d: common_vendor.t(common_vendor.unref(utils_common.compareTimestamp)(__props.item.updateTime))
       } : {}, {
-        e: common_vendor.t(__props.item.name)
+        e: common_vendor.t(__props.item.name),
+        f: `/pages/classlist/classlist?classId=${__props.item._id}&name=${__props.item.name}`
       }) : {
-        f: common_assets._imports_0,
-        g: common_vendor.p({
+        g: common_assets._imports_0,
+        h: common_vendor.p({
           type: "more-filled",
           size: "34",
           color: "#fff"

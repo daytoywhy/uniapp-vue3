@@ -3,5 +3,6 @@
   "projectname": "uniapp-music",
   "setting": {
     "compileHotReLoad": true
-  }
+  },
+  "libVersion": "3.3.1"
 }

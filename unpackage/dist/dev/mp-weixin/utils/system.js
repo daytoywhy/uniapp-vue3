@@ -3,7 +3,8 @@ const common_vendor = require("../common/vendor.js");
 const SYSTEM_INFO = common_vendor.index.getSystemInfoSync();
 const getStatusBarHeight = () => SYSTEM_INFO.statusBarHeight || 15;
 const getTitleBarHeight = () => {
-  if (common_vendor.index.getMenuButtonBoundingClientRect()) {
+  var _a;
+  if ((_a = common_vendor.index) == null ? void 0 : _a.getMenuButtonBoundingClientRect) {
     let { top, height } = common_vendor.index.getMenuButtonBoundingClientRect();
     return height + (top - getStatusBarHeight()) * 2;
   } else {

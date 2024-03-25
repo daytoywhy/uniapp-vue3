@@ -18,7 +18,7 @@
     }
   },
   "compileType": "miniprogram",
-  "libVersion": "3.3.2",
+  "libVersion": "latest",
   "appid": "touristappid",
   "projectname": "uniapp-music",
   "condition": {},

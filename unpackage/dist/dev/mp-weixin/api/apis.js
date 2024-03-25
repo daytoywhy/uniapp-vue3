@@ -20,7 +20,21 @@ function apiGetClassify(data = {}) {
     data
   });
 }
+function apiGetClassList(data = {}) {
+  return utils_request.request({
+    url: "/wallList",
+    data
+  });
+}
+function apiGetSetupScore(data = {}) {
+  return utils_request.request({
+    url: "/setupScore",
+    data
+  });
+}
 exports.apiGetBanner = apiGetBanner;
+exports.apiGetClassList = apiGetClassList;
 exports.apiGetClassify = apiGetClassify;
 exports.apiGetDayRandom = apiGetDayRandom;
 exports.apiGetNotice = apiGetNotice;
+exports.apiGetSetupScore = apiGetSetupScore;

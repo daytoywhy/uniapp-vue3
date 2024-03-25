@@ -29,15 +29,14 @@
 			"style" : 
 			{
 				"navigationBarTitleText" : "分类列表",
-				"enablePullDownRefresh" : false,
-				"navigationStyle": "custom"
+				"enablePullDownRefresh" : false
 			}
 		},
 		{
 			"path" : "pages/preview/preview",
 			"style" : 
 			{
-				"navigationBarTitleText" : "",
+				"navigationBarTitleText" : "预览",
 				"enablePullDownRefresh" : false,
 				"navigationStyle": "custom"
 			}

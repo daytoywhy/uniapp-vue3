@@ -87,12 +87,12 @@ const _sfc_main = {
         }),
         h: common_vendor.f(randomList.value, (item, k0, i0) => {
           return {
-            a: item.smallPicurl
+            a: item.smallPicurl,
+            b: common_vendor.o(goPreivew, item._id),
+            c: item._id
           };
         }),
-        i: common_vendor.o(goPreivew, _ctx.item_id),
-        j: _ctx.item_id,
-        k: common_vendor.f(classifyList.value, (item, k0, i0) => {
+        i: common_vendor.f(classifyList.value, (item, k0, i0) => {
           return {
             a: item._id,
             b: "1cf27b2a-7-" + i0,
@@ -101,7 +101,7 @@ const _sfc_main = {
             })
           };
         }),
-        l: common_vendor.p({
+        j: common_vendor.p({
           isMore: true
         })
       };

@@ -1,5 +1,9 @@
 <template>
-	<custom-nav-bar title="推荐"></custom-nav-bar>
+	<!-- #ifndef MP-TOUTIAO -->
+		<custom-nav-bar title="推荐"></custom-nav-bar>
+	<!-- #endif -->
+	
+	
 	<view class="homeLayout pageBg">
 		<view class="banner">
 			<swiper circular indicator-dots indicator-active-color="#fff" indicator-color="rgba(255,255,255,0.5)" :autoplay="true" :interval="3000" :duration="1000">
@@ -47,7 +51,7 @@
 			</common-title>
 			<view class="content">
 				<scroll-view scroll-x>
-					<view class="box" @click="goPreivew" v-for="item in randomList" :key="item_id">
+					<view class="box" @click="goPreivew" v-for="item in randomList" :key="item._id">
 						<image :src="item.smallPicurl" mode="aspectFill"></image>
 					</view>
 				</scroll-view>
