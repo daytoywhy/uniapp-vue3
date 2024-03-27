@@ -37,11 +37,21 @@ const _sfc_main = {
       };
     });
     const currentInfo = common_vendor.computed(() => classList.value[currentIndex.value]);
-    common_vendor.onLoad((e) => {
+    common_vendor.onLoad(async (e) => {
       const {
-        id
+        id,
+        type
       } = e;
       currentId.value = id;
+      if (type && type == "share") {
+        const res = await api_apis.apiDetailWall({ id });
+        classList.value = res.data.map((item) => {
+          return {
+            ...item,
+            picurl: item.smallPicurl.replace("_small.webp", ".jpg")
+          };
+        });
+      }
       currentIndex.value = classList.value.findIndex((item) => item._id === id);
       readImgsFun();
     });
@@ -100,65 +110,100 @@ const _sfc_main = {
       maskState.value = !maskState.value;
     };
     const goBack = () => {
-      common_vendor.index.navigateBack();
-    };
-    const downLoad = () => {
-      common_vendor.index.showLoading({
-        title: "下载中...",
-        mask: true
-      });
-      common_vendor.index.getImageInfo({
-        src: currentInfo.value.picurl,
-        success: (res) => {
-          common_vendor.index.saveImageToPhotosAlbum({
-            filePath: res.path,
-            success: (data) => {
-              common_vendor.index.showToast({
-                title: "保存成功，请到相册查看",
-                icon: "none"
-              });
-            },
-            fail: (err) => {
-              if (err.errMsg == "saveImageToPhotosAlbum:fail cancel") {
-                common_vendor.index.showToast({
-                  title: "保存失败，请重新点击下载",
-                  icon: "none"
-                });
-                return;
-              }
-              common_vendor.index.showModal({
-                title: "授权提示",
-                content: "需要授权保存相册",
-                success: (res2) => {
-                  if (res2.confirm) {
-                    common_vendor.index.openSetting({
-                      success: (setting) => {
-                        if (setting.authSetting["scope.writePhotosAlbum"]) {
-                          common_vendor.index.showToast({
-                            title: "获取授权成功",
-                            icon: "none"
-                          });
-                        } else {
-                          common_vendor.index.showToast({
-                            title: "获取权限失败",
-                            icon: "none"
-                          });
-                        }
-                      }
-                    });
-                  }
-                },
-                fail: () => {
-                }
-              });
-            },
-            complete: () => {
-              common_vendor.index.hideLoading();
-            }
+      common_vendor.index.navigateBack({
+        success: () => {
+        },
+        fail: () => {
+          common_vendor.index.reLaunch({
+            url: "/pages/index/index "
           });
         }
       });
     };
+    const downLoad = async () => {
+      try {
+        common_vendor.index.showLoading({
+          title: "下载中...",
+          mask: true
+        });
+        let {
+          classid,
+          _id: wallId
+        } = currentInfo.value;
+        const res = await api_apis.apiWriteDownload({
+          classid,
+          wallId
+        });
+        if (res.errCode != 0)
+          throw res;
+        common_vendor.index.getImageInfo({
+          src: currentInfo.value.picurl,
+          success: (res2) => {
+            common_vendor.index.saveImageToPhotosAlbum({
+              filePath: res2.path,
+              success: (data) => {
+                common_vendor.index.showToast({
+                  title: "保存成功，请到相册查看",
+                  icon: "none"
+                });
+              },
+              fail: (err) => {
+                if (err.errMsg == "saveImageToPhotosAlbum:fail cancel") {
+                  common_vendor.index.showToast({
+                    title: "保存失败，请重新点击下载",
+                    icon: "none"
+                  });
+                  return;
+                }
+                common_vendor.index.showModal({
+                  title: "授权提示",
+                  content: "需要授权保存相册",
+                  success: (res3) => {
+                    if (res3.confirm) {
+                      common_vendor.index.openSetting({
+                        success: (setting) => {
+                          if (setting.authSetting["scope.writePhotosAlbum"]) {
+                            common_vendor.index.showToast({
+                              title: "获取授权成功",
+                              icon: "none"
+                            });
+                          } else {
+                            common_vendor.index.showToast({
+                              title: "获取权限失败",
+                              icon: "none"
+                            });
+                          }
+                        }
+                      });
+                    }
+                  },
+                  fail: () => {
+                  }
+                });
+              },
+              complete: () => {
+                common_vendor.index.hideLoading();
+              }
+            });
+          }
+        });
+      } catch (e) {
+        console.log(e);
+        common_vendor.index.hideLoading();
+      }
+    };
+    common_vendor.onShareAppMessage(() => {
+      return {
+        title: "呆桃的小屋",
+        path: `/pages/preview/preview?id=${currentId.value}&type=share`
+      };
+    });
+    common_vendor.onShareTimeline(() => {
+      return {
+        title: "呆桃的小屋",
+        query: `id=${currentId.value}&type=share`
+      };
+    });
     const readImgsFun = () => {
       readImgs.value.push(
         currentIndex.value <= 0 ? classList.length - 1 : currentIndex.value - 1,
@@ -273,4 +318,5 @@ const _sfc_main = {
   }
 };
 const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__scopeId", "data-v-2dad6c07"], ["__file", "/Users/chenxiangxiong/Desktop/项目代码/uniapp-music/pages/preview/preview.vue"]]);
+_sfc_main.__runtimeHooks = 6;
 wx.createPage(MiniProgramPage);

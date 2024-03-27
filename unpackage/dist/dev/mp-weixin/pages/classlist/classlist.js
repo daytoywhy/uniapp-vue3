@@ -1,6 +1,7 @@
 "use strict";
 const common_vendor = require("../../common/vendor.js");
 const api_apis = require("../../api/apis.js");
+const utils_common = require("../../utils/common.js");
 require("../../utils/request.js");
 if (!Array) {
   const _easycom_uni_load_more2 = common_vendor.resolveComponent("uni-load-more");
@@ -19,21 +20,35 @@ const _sfc_main = {
       pageNum: 1,
       pageSize: 12
     };
+    let pageName = "";
     common_vendor.onLoad((e) => {
       const {
-        classId,
-        name
+        id,
+        name,
+        type
       } = e;
-      qryParams.classid = classId;
+      if (!id) {
+        utils_common.goToHome();
+        return;
+      }
+      if (type)
+        qryParams.type = type;
+      if (id)
+        qryParams.classid = id;
+      pageName = name;
       common_vendor.index.setNavigationBarTitle({
         title: name
       });
       getClassList(qryParams);
     });
     const getClassList = async (params) => {
-      const res = await api_apis.apiGetClassList({
-        ...params
-      });
+      let res;
+      if (params.classid)
+        res = await api_apis.apiGetClassList({
+          ...params
+        });
+      if (params.type)
+        res = await api_apis.apiGetHistoryList({ ...params });
       classList.value = classList.value.concat(res.data);
       common_vendor.index.setStorageSync("storeClassList", classList.value);
       if (qryParams.pageSize > res.data.length)
@@ -44,6 +59,18 @@ const _sfc_main = {
         return;
       qryParams.pageNum++;
       getClassList(qryParams);
+    });
+    common_vendor.onShareAppMessage(() => {
+      return {
+        title: "呆桃的小屋",
+        path: `/pages/classlist/classlist?id=${qryParams.classid}&name=${pageName}`
+      };
+    });
+    common_vendor.onShareTimeline(() => {
+      return {
+        title: "呆桃的小屋",
+        query: `id=${qryParams.classid}&name=${pageName}`
+      };
     });
     common_vendor.onUnload(() => {
       common_vendor.index.removeStorageSync("storeClassList");
@@ -73,4 +100,5 @@ const _sfc_main = {
   }
 };
 const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__scopeId", "data-v-bd381383"], ["__file", "/Users/chenxiangxiong/Desktop/项目代码/uniapp-music/pages/classlist/classlist.vue"]]);
+_sfc_main.__runtimeHooks = 6;
 wx.createPage(MiniProgramPage);

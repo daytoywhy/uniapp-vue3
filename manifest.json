@@ -1,6 +1,6 @@
 {
-    "name" : "uniapp-music",
-    "appid" : "",
+    "name" : "呆桃的小屋",
+    "appid" : "__UNI__E00EC3F",
     "description" : "",
     "versionName" : "1.0.0",
     "versionCode" : "100",
@@ -50,12 +50,13 @@
     "quickapp" : {},
     /* 小程序特有相关 */
     "mp-weixin" : {
-        "appid" : "",
+        "appid" : "wx4e08a05c05d72e3b",
         "setting" : {
-            "urlCheck" : false
+            "urlCheck" : false,
+            "minified" : true
         },
         "usingComponents" : true,
-		"libVersion": "latest"
+        "libVersion" : "latest"
     },
     "mp-alipay" : {
         "usingComponents" : true

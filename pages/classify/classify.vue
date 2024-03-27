@@ -9,6 +9,7 @@
 
 <script setup>
 	import {ref} from 'vue'
+	import {onShareAppMessage,onShareTimeline} from '@dcloudio/uni-app'
 		import { apiGetClassify } from '@/api/apis.js'
 		const classifyList = ref([])
 		
@@ -16,6 +17,19 @@
 			const res = await apiGetClassify({pageSize: 15})
 			classifyList.value = res.data
 		}
+		//分享好友
+		onShareAppMessage(()=>{
+			return{
+				title:'呆桃的小屋',
+				path:'/pages/classify/classify'
+			}
+		})
+		//分享朋友圈
+		onShareTimeline(()=>{
+			return {
+				title:'呆桃的小屋'
+			}
+		})
 		getClassify()
 </script>
 

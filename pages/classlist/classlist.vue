@@ -19,28 +19,41 @@
 
 <script setup>
 	import {
-		apiGetClassList
+		apiGetClassList,
+		apiGetHistoryList
 	} from '@/api/apis.js'
+	
 	import {
 		onLoad,
 		onReachBottom,
-		onUnload
+		onUnload,
+		onShareAppMessage,onShareTimeline
 	} from '@dcloudio/uni-app'
 	import {
 		ref
 	} from 'vue'
+	import { goToHome } from '@/utils/common.js'
 	const classList = ref([])
 	const noData = ref(false)
 	const qryParams = {
 		pageNum: 1,
 		pageSize: 12
 	}
+	let pageName = ''
 	onLoad((e) => {
 		const {
-			classId,
-			name
+			id,
+			name,
+			type
 		} = e
-		qryParams.classid = classId
+		if(!id) {
+			goToHome()
+			return
+		}
+		if(type) qryParams.type = type
+		if(id) qryParams.classid = id
+		
+		pageName = name
 		uni.setNavigationBarTitle({
 			title: name
 		})
@@ -49,9 +62,11 @@
 	})
 
 	const getClassList = async (params) => {
-		const res = await apiGetClassList({
+		let res;
+		if(params.classid) res = await apiGetClassList({
 			...params
 		})
+		if(params.type ) res = await apiGetHistoryList({...params})
 		classList.value = classList.value.concat(res.data)
 		uni.setStorageSync('storeClassList',classList.value)
 		if (qryParams.pageSize > res.data.length) noData.value = true
@@ -60,6 +75,20 @@
 		if (noData.value) return
 		qryParams.pageNum++
 		getClassList(qryParams)
+	})
+	//分享好友
+	onShareAppMessage(()=>{
+		return{
+			title:'呆桃的小屋',
+			path:`/pages/classlist/classlist?id=${qryParams.classid}&name=${pageName}`
+		}
+	})
+	//分享朋友圈
+	onShareTimeline(()=>{
+		return {
+			title:'呆桃的小屋',
+			query: `id=${qryParams.classid}&name=${pageName}`
+		}
 	})
 	onUnload(()=>{
 		uni.removeStorageSync('storeClassList')

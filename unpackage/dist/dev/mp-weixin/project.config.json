@@ -1,29 +1,36 @@
 {
   "description": "项目配置文件。",
   "packOptions": {
-    "ignore": [],
-    "include": []
+    "ignore": []
   },
   "setting": {
     "urlCheck": false,
     "es6": true,
     "postcss": false,
-    "minified": false,
+    "minified": true,
     "newFeature": true,
-    "bigPackageSizeSupport": true,
-    "babelSetting": {
-      "ignore": [],
-      "disablePlugins": [],
-      "outputPath": ""
-    }
+    "bigPackageSizeSupport": true
   },
   "compileType": "miniprogram",
   "libVersion": "latest",
-  "appid": "touristappid",
-  "projectname": "uniapp-music",
-  "condition": {},
-  "editorSetting": {
-    "tabIndent": "insertSpaces",
-    "tabSize": 2
+  "appid": "wx4e08a05c05d72e3b",
+  "projectname": "呆桃的小屋",
+  "condition": {
+    "search": {
+      "current": -1,
+      "list": []
+    },
+    "conversation": {
+      "current": -1,
+      "list": []
+    },
+    "game": {
+      "current": -1,
+      "list": []
+    },
+    "miniprogram": {
+      "current": -1,
+      "list": []
+    }
   }
 }

@@ -20,6 +20,17 @@ const _sfc_main = {
       const res = await api_apis.apiGetClassify({ pageSize: 15 });
       classifyList.value = res.data;
     };
+    common_vendor.onShareAppMessage(() => {
+      return {
+        title: "呆桃的小屋",
+        path: "/pages/classify/classify"
+      };
+    });
+    common_vendor.onShareTimeline(() => {
+      return {
+        title: "呆桃的小屋"
+      };
+    });
     getClassify();
     return (_ctx, _cache) => {
       return {
@@ -40,4 +51,5 @@ const _sfc_main = {
   }
 };
 const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__scopeId", "data-v-6bcfa975"], ["__file", "/Users/chenxiangxiong/Desktop/项目代码/uniapp-music/pages/classify/classify.vue"]]);
+_sfc_main.__runtimeHooks = 6;
 wx.createPage(MiniProgramPage);

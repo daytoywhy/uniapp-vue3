@@ -8,7 +8,7 @@
 		<view class="banner">
 			<swiper circular indicator-dots indicator-active-color="#fff" indicator-color="rgba(255,255,255,0.5)" :autoplay="true" :interval="3000" :duration="1000">
 				<swiper-item v-for="item in bannerList" :key="item._id">
-					<image :src="item.picurl" mode="aspectFill"></image>
+					<image :src="item.picurl" mode="aspectFill" @click="goToClasslist(item)"></image>
 				</swiper-item>
 				
 			</swiper>
@@ -23,7 +23,7 @@
 			<view class="center">
 				<swiper autoplay :interval="1500" :duration="300" circular vertical>
 					<swiper-item v-for="item in noticeList" :key="item._id">
-						<navigator url="/pages/notice/detail">
+						<navigator :url="`/pages/notice/detail?id=${item._id}`">
 							{{ item.title }}
 						</navigator>
 					</swiper-item>
@@ -51,7 +51,7 @@
 			</common-title>
 			<view class="content">
 				<scroll-view scroll-x>
-					<view class="box" @click="goPreivew" v-for="item in randomList" :key="item._id">
+					<view class="box" @click="goPreivew(item._id)" v-for="item in randomList" :key="item._id">
 						<image :src="item.smallPicurl" mode="aspectFill"></image>
 					</view>
 				</scroll-view>
@@ -63,7 +63,7 @@
 					专题精选
 				</template>
 				<template #custom>
-					<view class="more">More +</view>
+					<navigator url="/pages/classify/classify" open-type="switchTab" class="more">More +</navigator>
 				</template>
 			</common-title>
 			<view class="content">
@@ -77,6 +77,7 @@
 <script setup>
 	import { apiGetBanner,apiGetNotice,apiGetClassify,apiDetailWall, apiGetDayRandom } from '@/api/apis.js'
 import { ref } from 'vue';
+import { onShareAppMessage,onShareTimeline} from '@dcloudio/uni-app'
 	const bannerList = ref([])
 	const noticeList = ref([])
 	const randomList = ref([])
@@ -97,10 +98,40 @@ import { ref } from 'vue';
 		const res = await apiGetClassify({select:true})
 		classifyList.value = res.data
 	}
-	const goPreivew = () =>{
+	const goPreivew = (id) =>{
 		uni.navigateTo({
-			url:'/pages/preview/preview'
+			url:'/pages/preview/preview?id=' + id
 		})
+		uni.setStorageSync('storeClassList',randomList.value)
+	}
+	//分享好友
+	onShareAppMessage(()=>{
+		return{
+			title:'呆桃的小屋',
+			path:'/pages/index/index'
+		}
+	})
+	//分享朋友圈
+	onShareTimeline(()=>{
+		return {
+			title:'呆桃的小屋'
+		}
+	})
+	const goToClasslist = (item)=>{
+		if(item.target === 'miniProgram'){
+			uni.navigateToMiniProgram({
+				appId:item.appid,
+				path: item.url,
+				success:(res)=>{
+					console.log('跳转成功')
+				}
+			})
+		} else {
+			uni.navigateTo({
+				url:`/pages/classlist/classlist?${item.url}`
+			})
+		}
+		
 	}
 	getBanner()
 	getNotice()

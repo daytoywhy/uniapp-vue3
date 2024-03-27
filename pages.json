@@ -21,7 +21,8 @@
 			"style" : 
 			{
 				"navigationBarTitleText" : "我的",
-				"enablePullDownRefresh" : false
+				"enablePullDownRefresh" : false,
+				"navigationStyle": "custom"
 			}
 		},
 		{
@@ -55,6 +56,14 @@
 			"style" : 
 			{
 				"navigationBarTitleText" : "公告详情",
+				"enablePullDownRefresh" : false
+			}
+		},
+		{
+			"path" : "pages/search/search",
+			"style" : 
+			{
+				"navigationBarTitleText" : "搜索",
 				"enablePullDownRefresh" : false
 			}
 		}

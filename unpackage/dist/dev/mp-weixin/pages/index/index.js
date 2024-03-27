@@ -41,10 +41,37 @@ const _sfc_main = {
       const res = await api_apis.apiGetClassify({ select: true });
       classifyList.value = res.data;
     };
-    const goPreivew = () => {
+    const goPreivew = (id) => {
       common_vendor.index.navigateTo({
-        url: "/pages/preview/preview"
+        url: "/pages/preview/preview?id=" + id
       });
+      common_vendor.index.setStorageSync("storeClassList", randomList.value);
+    };
+    common_vendor.onShareAppMessage(() => {
+      return {
+        title: "呆桃的小屋",
+        path: "/pages/index/index"
+      };
+    });
+    common_vendor.onShareTimeline(() => {
+      return {
+        title: "呆桃的小屋"
+      };
+    });
+    const goToClasslist = (item) => {
+      if (item.target === "miniProgram") {
+        common_vendor.index.navigateToMiniProgram({
+          appId: item.appid,
+          path: item.url,
+          success: (res) => {
+            console.log("跳转成功");
+          }
+        });
+      } else {
+        common_vendor.index.navigateTo({
+          url: `/pages/classlist/classlist?${item.url}`
+        });
+      }
     };
     getBanner();
     getNotice();
@@ -58,7 +85,8 @@ const _sfc_main = {
         b: common_vendor.f(bannerList.value, (item, k0, i0) => {
           return {
             a: item.picurl,
-            b: item._id
+            b: common_vendor.o(($event) => goToClasslist(item), item._id),
+            c: item._id
           };
         }),
         c: common_vendor.p({
@@ -68,7 +96,8 @@ const _sfc_main = {
         d: common_vendor.f(noticeList.value, (item, k0, i0) => {
           return {
             a: common_vendor.t(item.title),
-            b: item._id
+            b: `/pages/notice/detail?id=${item._id}`,
+            c: item._id
           };
         }),
         e: common_vendor.p({
@@ -88,7 +117,7 @@ const _sfc_main = {
         h: common_vendor.f(randomList.value, (item, k0, i0) => {
           return {
             a: item.smallPicurl,
-            b: common_vendor.o(goPreivew, item._id),
+            b: common_vendor.o(($event) => goPreivew(item._id), item._id),
             c: item._id
           };
         }),
@@ -109,4 +138,5 @@ const _sfc_main = {
   }
 };
 const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__scopeId", "data-v-1cf27b2a"], ["__file", "/Users/chenxiangxiong/Desktop/项目代码/uniapp-music/pages/index/index.vue"]]);
+_sfc_main.__runtimeHooks = 6;
 wx.createPage(MiniProgramPage);
